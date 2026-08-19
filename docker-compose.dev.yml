@@ -1,0 +1,43 @@
+services:
+  gateway:
+    build:
+      context: ./gateway
+      target: dev
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./gateway:/app
+    env_file:
+      - ./gateway/.env
+    depends_on:
+      article:
+        condition: service_started
+
+  article:
+    build:
+      context: ./article
+      target: dev
+    volumes:
+      - ./article:/app
+    env_file:
+      - ./article/.env
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    env_file:
+      - .env
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${MYSQL_USER} -p\"${MYSQL_PASSWORD}\" || exit 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:
