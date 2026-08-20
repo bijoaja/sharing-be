@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 
 import httpx
 from fastapi import FastAPI, APIRouter, Request, Response
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.config.logger import setup_logging
 from app.config.settings import settings
@@ -16,6 +17,15 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Gateway Service", lifespan=lifespan)
 
+# CORS middleware — allow all origins/methods for dev
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 health_router = APIRouter(tags=["Health"])
 
 @health_router.get("/health")
@@ -28,7 +38,7 @@ HOP_BY_HOP_HEADERS = {"host", "content-length", "connection", "transfer-encoding
 
 @app.api_route(
     "/article{path:path}",
-    methods=["GET", "POST", "PATCH", "DELETE"],
+    methods=["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
 )
 async def proxy_article(path: str, request: Request) -> Response:
     forward_headers = {
