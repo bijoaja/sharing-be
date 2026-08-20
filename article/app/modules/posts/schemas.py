@@ -1,23 +1,18 @@
 from datetime import datetime
-from enum import Enum
 from typing import Optional
 from pydantic import BaseModel, ConfigDict, Field
-
-class PostStatus(str, Enum):
-    PUBLISH = "Publish"
-    DRAFT = "Draft"
-    TRASH = "Trash"
+from app.core.enums import PostStatus
 
 class CreatePostRequest(BaseModel):
-    title: str = Field(min_length=1, max_length=200)
-    content: str = Field(min_length=1)
-    category: str = Field(min_length=1, max_length=100)
+    title: str = Field(min_length=20, max_length=255)
+    content: str = Field(min_length=200)
+    category: str = Field(min_length=3, max_length=100)
     status: PostStatus = PostStatus.DRAFT
 
 class UpdatePostRequest(BaseModel):
-    title: Optional[str] = Field(None, min_length=1, max_length=200)
-    content: Optional[str] = Field(None, min_length=1)
-    category: Optional[str] = Field(None, min_length=1, max_length=100)
+    title: Optional[str] = Field(None, min_length=20, max_length=255)
+    content: Optional[str] = Field(None, min_length=200)
+    category: Optional[str] = Field(None, min_length=3, max_length=100)
     status: Optional[PostStatus] = None
 
 class PostResponse(BaseModel):

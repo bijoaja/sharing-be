@@ -36,7 +36,7 @@ class PostRepository:
         return post
 
     async def soft_delete(self, post: Post) -> Post:
-        post.status = "Trash"
+        post.status = "thrash"
         await self.db.flush()
         await self.db.refresh(post)
         return post

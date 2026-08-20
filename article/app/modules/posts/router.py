@@ -50,4 +50,4 @@ async def delete_article(
     service: PostService = Depends(get_post_service),
 ) -> ApiResponse[dict]:
     await service.delete_post(id)
-    return ApiResponse(data={"message": "Article moved to trash"})
+    return ApiResponse(data={"message": "Article moved to thrash"})
