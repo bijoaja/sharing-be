@@ -15,7 +15,7 @@ migrate:
 	docker compose exec article alembic upgrade head
 
 create-table:
-	docker compose exec -T db sh -c 'exec mysql -u"$(MYSQL_USER)" -p"$(MYSQL_PASSWORD)" article' < article/scripts/create_posts_table.sql
+	docker compose exec -T db mysql -u"$${MYSQL_USER}" -p"$${MYSQL_PASSWORD}" article < article/scripts/create_posts_table.sql
 
 stamp:
 	docker compose exec article alembic stamp head
@@ -31,7 +31,7 @@ migrate-dev:
 	docker compose -f docker-compose.dev.yml exec article alembic upgrade head
 
 create-table-dev:
-	docker compose -f docker-compose.dev.yml exec -T db sh -c 'exec mysql -u"$(MYSQL_USER)" -p"$(MYSQL_PASSWORD)" article' < article/scripts/create_posts_table.sql
+	docker compose -f docker-compose.dev.yml exec -T db mysql -u"$${MYSQL_USER}" -p"$${MYSQL_PASSWORD}" article < article/scripts/create_posts_table.sql
 
 stamp-dev:
 	docker compose -f docker-compose.dev.yml exec article alembic stamp head
