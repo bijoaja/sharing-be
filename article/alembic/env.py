@@ -26,6 +26,7 @@ _DB_NAME = _DATABASE_URL.rsplit("/", 1)[-1]
 
 _parts = urlsplit(_DATABASE_URL)
 _APP_USER = _parts.username
+_APP_PASSWORD = _parts.password
 
 # Root URL: same host/port as DATABASE_URL but authenticated as root, no
 # default database selected (the database may not exist yet on first run).
@@ -49,7 +50,7 @@ async def _bootstrap_database_and_grants() -> None:
         await connection.execute(text(f"CREATE DATABASE IF NOT EXISTS {_DB_NAME}"))
         if _APP_USER and _APP_USER != "root":
             await connection.execute(
-                text(f"CREATE USER IF NOT EXISTS '{_APP_USER}'@'%' IDENTIFIED BY '{settings.MYSQL_PASSWORD}'")
+                text(f"CREATE USER IF NOT EXISTS '{_APP_USER}'@'%' IDENTIFIED BY '{_APP_PASSWORD}'")
             )
             await connection.execute(
                 text(f"GRANT ALL PRIVILEGES ON {_DB_NAME}.* TO '{_APP_USER}'@'%'")

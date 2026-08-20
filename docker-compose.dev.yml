@@ -1,5 +1,6 @@
 services:
   gateway:
+    container_name: gateway
     build:
       context: ./gateway
       target: dev
@@ -14,6 +15,7 @@ services:
         condition: service_started
 
   article:
+    container_name: article
     build:
       context: ./article
       target: dev
@@ -27,6 +29,7 @@ services:
 
   db:
     image: mysql:8.0
+    container_name: db
     ports:
       - "3306:3306"
     env_file:
@@ -34,7 +37,7 @@ services:
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u${MYSQL_USER} -p\"${MYSQL_PASSWORD}\" || exit 1"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p\"${MYSQL_ROOT_PASSWORD}\" || exit 1"]
       interval: 5s
       timeout: 5s
       retries: 5

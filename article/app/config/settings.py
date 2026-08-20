@@ -9,7 +9,6 @@ class Settings(BaseSettings):
     # database and grant privileges to the app user in DATABASE_URL above.
     # Not used by the running app itself.
     MYSQL_ROOT_PASSWORD: str = ""
-    MYSQL_PASSWORD: str = ""
 
     model_config = SettingsConfigDict(
         env_file=(".env", ".env.local", ".env.production"),
