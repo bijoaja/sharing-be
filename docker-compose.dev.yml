@@ -19,6 +19,8 @@ services:
     build:
       context: ./article
       target: dev
+    ports:
+      - "8001:8001"
     volumes:
       - ./article:/app
     env_file:

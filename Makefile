@@ -1,9 +1,5 @@
 .PHONY: up down migrate create-table stamp up-dev down-dev migrate-dev create-table-dev stamp-dev
 
-# Load .env variables biar bisa dipake di command
-include .env
-export
-
 # --- prod ---
 up:
 	docker compose up -d
